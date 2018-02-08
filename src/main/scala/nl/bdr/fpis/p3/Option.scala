@@ -1,5 +1,7 @@
 package nl.bdr.fpis.p3
 
+//hide std library `Option` and `Either`, since we are writing our own in this chapter
+import scala.{Option => _}
 
 // Exercise 4.1
 //

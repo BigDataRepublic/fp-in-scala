@@ -30,3 +30,26 @@ def fillListLazy[A](n: Int)(a: => A) = {
 
 fillListLazy(2)(negate(true))
 
+val (v1, v2, v3, v4) = (1, 2, 3, 4)
+
+::(v1, ::(v2, ::(v3, ::(v4, Nil))))
+v1 :: v2 :: v3 :: v4 :: Nil
+v1 :: v2 :: v3 :: v4 :: Nil
+
+List(v1, v2, v3, v4)
+
+import nl.bdr.fpis.p5.Stream._
+import nl.bdr.fpis.p5._
+
+cons(v1, cons(v2, cons(v3, cons(v4, empty))))
+
+Stream(v1, v2, v3, v4)
+
+val str = cons(negate(true), cons(negate(true), cons(negate(true), empty)))
+println(str.headOption)
+
+ones.take(5).toList
+List(1, 1, 1, 1, 1)
+
+
+

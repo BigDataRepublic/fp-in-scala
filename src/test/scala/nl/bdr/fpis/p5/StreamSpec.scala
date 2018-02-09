@@ -51,9 +51,9 @@ class StreamSpec extends FlatSpec with Matchers {
   }
 
   "Ex. 5.6 Stream.headOption" should "give the first element if the stream isn't empty" in {
-    Stream().headOption should be (None)
-    Stream(1).headOption should be (Some(1))
-    ones.headOption should be (Some(1))
+    Stream().headOption2 should be (None)
+    Stream(1).headOption2 should be (Some(1))
+    ones.headOption2 should be (Some(1))
   }
 
   "Ex. 5.7 Stream.map" should "correctly map over a stream" in {

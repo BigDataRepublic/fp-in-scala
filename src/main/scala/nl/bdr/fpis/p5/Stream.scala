@@ -2,6 +2,12 @@ package nl.bdr.fpis.p5
 
 sealed trait Stream[+A] {
 
+  // Text 5.2
+  def headOption: Option[A] = this match {
+    case Empty => None
+    case Cons(h, t) => Some(h())
+  }
+
   // Ex. 5.1
   /**
     * Force the evaluation of the stream, and return the stream as a list.
@@ -33,7 +39,12 @@ sealed trait Stream[+A] {
   }
 
   // Text 5.3
-  def exists(p: A => Boolean): Boolean = foldRight(false)((a, b) => p(a) || b)
+  def exists(p: A => Boolean): Boolean = this match {
+    case Cons(h, t) => p(h()) || t().exists(p)
+    case _ => false
+  }
+
+  def existsWithFold(p: A => Boolean): Boolean = foldRight(false)((a, b) => p(a) || b)
 
   // Ex. 5.4
   def forAll(p: A => Boolean): Boolean = ???
@@ -42,7 +53,7 @@ sealed trait Stream[+A] {
   def takeWhile2(p: A => Boolean): Stream[A] = ???
 
   // Ex. 5.6
-  def headOption: Option[A] = ???
+  def headOption2: Option[A] = ???
 
   // Ex. 5.7
   def map[B](f: A => B): Stream[B] = ???

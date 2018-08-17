@@ -66,11 +66,12 @@ class Chapter2Spec extends WordSpec with Matchers {
 
   "the curry function" when {
     "given a repeat function function" should {
+
       // Repeats the string a number of times.
       def repeatString(a: String, b: Int): String = Seq.fill(b)(a).mkString("")
       "should curry on the first argument" in {
         val repeatCurried: String => Int => String = curry(repeatString)
-        val toodleDoRepeater = repeatCurried("toodledo")
+        val toodleDoRepeater: Int => String = repeatCurried("toodledo")
         toodleDoRepeater(3) should be ("toodledotoodledotoodledo")
       }
     }

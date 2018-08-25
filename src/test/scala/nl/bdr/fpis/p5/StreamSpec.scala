@@ -78,6 +78,9 @@ class StreamSpec extends FlatSpec with Matchers {
     s1.append(Empty).toList should be (List(2, 3, 4))
     Empty.append(s1).toList should be (List(2,3,4))
     Empty.append(Empty) should be (Empty)
+
+    // Append an infinite list to check for non-strictness
+    s1.append(ones).take(5).toList should be (List(2, 3, 4, 1, 1))
   }
 
   "Ex. 5.7 Stream.flatMap" should "correctly flatmap a stream" in {

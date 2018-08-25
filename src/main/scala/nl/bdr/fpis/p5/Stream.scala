@@ -131,6 +131,9 @@ object Stream {
   def fibs2: Stream[Int] = ???
 
   // Ex. 5.12
+  def constant2: Stream[Int] = ???
+
+  // Ex. 5.12
   def from2(n: Int): Stream[Int] = ???
 
   // Ex. 5.12

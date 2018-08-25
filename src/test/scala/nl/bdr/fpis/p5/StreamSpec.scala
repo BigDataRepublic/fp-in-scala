@@ -42,6 +42,9 @@ class StreamSpec extends FlatSpec with Matchers {
     Stream(2,4,5) forAll even should be (false)
     Stream(2,4,6) forAll even should be (true)
     Stream() forAll even should be (true)
+
+    // Take an infinite stream to check for early termination
+    ones.forAll(even) should be (false)
   }
 
   "Ex. 5.5 Stream.takeWhile2" should "take elements while the condition is true" in {

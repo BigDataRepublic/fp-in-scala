@@ -128,6 +128,8 @@ object Stream {
   def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = ???
 
   // Ex. 5.12
+  //
+  // Write fibs constant, and ones in terms of unfold
   def fibs2: Stream[Int] = ???
 
   // Ex. 5.12

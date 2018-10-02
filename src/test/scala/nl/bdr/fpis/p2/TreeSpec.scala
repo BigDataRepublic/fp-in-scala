@@ -5,35 +5,34 @@ import org.scalacheck.Prop.forAll
 import org.scalatest.prop.{Checkers, GeneratorDrivenPropertyChecks}
 import org.scalatest.{Matchers, WordSpec}
 
-object TreeSpecification {
+object ArbitraryTrees {
 
   implicit def arbTree[T](implicit a: Arbitrary[T]): Arbitrary[Tree[T]] =
     Arbitrary {
       val genLeaf = for (e <- Arbitrary.arbitrary[T]) yield Leaf(e)
 
-      def genInternal(sz: Int): Gen[Tree[T]] = for {
+      def genBranch(sz: Int): Gen[Tree[T]] = for {
         left <- sizedTree(sz / 2)
         right <- sizedTree(sz / 2)
       } yield Branch(left, right)
 
       def sizedTree(sz: Int): Gen[Tree[T]] =
         if (sz <= 0) genLeaf
-        else Gen.frequency((1, genLeaf), (3, genInternal(sz)))
+        else Gen.frequency((1, genLeaf), (3, genBranch(sz)))
 
       Gen.sized(sz => sizedTree(sz))
     }
 }
 
 class TreeSpec extends WordSpec with Matchers with GeneratorDrivenPropertyChecks{
-  import TreeSpecification._
-
+  import ArbitraryTrees._
 
   "A tree" when {
 
     import Tree._
 
     "the size" should {
-      "combining two trees as one, the size of both trees plus one should be the size of the resulting tree minus one" in {
+      "combining two trees as one, adding the size of both trees should equal the size of the combined tree minus one" in {
         forAll("t1", "t2") { (t1: Tree[Unit], t2: Tree[Unit]) =>
           Tree.size(t1) + Tree.size(t2) should be(Tree.size(Branch(t1, t2)) - 1)
         }
@@ -66,14 +65,15 @@ class TreeSpec extends WordSpec with Matchers with GeneratorDrivenPropertyChecks
     }
 
     "map" should {
-      val f: String => Int = el => el.length
+      val f: Int => String = el => el.toString
       "mapping of two trees combined should be the result of combining both trees and mapping over it" in {
-        forAll("t1", "t2") { (t1: Tree[String], t2: Tree[String]) =>
+        forAll("t1", "t2") { (t1: Tree[Int], t2: Tree[Int]) =>
           Branch(map(t1)(f), map(t2)(f)) should be(map(Branch(t1, t2))(f))
         }
       }
       "not change the structure of the tree" in {
-        forAll("t") { t: Tree[String] =>
+        forAll("t") { t: Tree[Int] =>
+          map(t)(identity) should be (t)
           depth(t) should be(depth(map(t)(f)))
           Tree.size(t) should be(Tree.size(map(t)(f)))
         }

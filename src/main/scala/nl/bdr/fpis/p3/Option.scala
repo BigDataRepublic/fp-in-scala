@@ -24,16 +24,50 @@ trait Option[+A] {
   def filter(f: A => Boolean): Option[A]
 }
 
+case object None extends Option[Nothing] {
+  override def map[B](f: Nothing => B): Option[B] = ???
 
+  override def flatMap[B](f: Nothing => Option[B]): Option[B] = ???
+
+  override def getOrElse[B >: Nothing](default: => B): B = ???
+
+  override def orElse[B >: Nothing](ob: => Option[B]): Option[B] = ???
+
+  override def filter(f: Nothing => Boolean): Option[Nothing] = ???
+}
+
+case class Some[A](a: A) extends Option[A] {
+  override def map[B](f: A => B): Option[B] = ???
+
+  override def flatMap[B](f: A => Option[B]): Option[B] = ???
+
+  override def getOrElse[B >: A](default: => B): B = ???
+
+  override def orElse[B >: A](ob: => Option[B]): Option[B] = ???
+
+  override def filter(f: A => Boolean): Option[A] = ???
+}
 
 object HandlingErrors {
+  import nl.bdr.fpis.p2.List
+  import nl.bdr.fpis.p2.Nil
+  import nl.bdr.fpis.p2.Cons
+
+
+  // Section - 4.3
+  /**
+    * Optionally returns the mean of the sequence of doubles, or None when
+    * the sequence is empty.
+     */
+  def mean(xs: Seq[Double]): Option[Double] =
+    if (xs.isEmpty) None
+    else Some(xs.sum / xs.size)
 
   // Exercise - 4.2
   //
   // Implement the variance function in terms of flatMap. If the mean of a sequence is m ,
   // the variance is the mean of math.pow(x - m, 2) for each element x in the sequence.
   // See the definition of variance on Wikipedia (http://mng.bz/0Qsr).
-
   def variance(xs: Seq[Double]) : Option[Double] = ???
 
   // Exercise - 4.3
@@ -41,7 +75,6 @@ object HandlingErrors {
   // Write a generic function map2 that combines two Option values using a binary function. If
   // either Option value is None, then the return value is too. Here is its signature:
   def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = ???
-
 
   // Exercise - 4.4
   //
@@ -57,7 +90,6 @@ object HandlingErrors {
   // for a more efficient implementation that only looks at the list once. In fact, implement
   // sequence in terms of traverse .
   def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = ???
-
 
 }
 

@@ -3,20 +3,22 @@ package nl.bdr.fpis.p2
 import scala.annotation.tailrec
 
 sealed trait List[+A]
+
 case object Nil extends List[Nothing]
-case class Cons[+A](head: A, tail: List[A]) extends List[A]
+
+case class Cons[A](head: A, tail: List[A]) extends List[A]
 
 // Companion object
 object List {
   def sum(ints: List[Int]): Int = ints match {
     case Nil => 0
-    case Cons(x,xs) => x + sum(xs)
+    case Cons(x, xs) => x + sum(xs)
   }
 
   def product(ds: List[Double]): Double = ds match {
     case Nil => 1.0
     case Cons(0.0, _) => 0.0
-    case Cons(x,xs) => x * product(xs)
+    case Cons(x, xs) => x * product(xs)
   }
 
   def apply[A](as: A*): List[A] =
@@ -29,7 +31,7 @@ object List {
   // Exercise 3.1
   //
   // What will be the result of the following match expression?
-  val x = List(1,2,3,4,5) match {
+  val result: Int = List(1, 2, 3, 4, 5) match {
     case Cons(x, Cons(2, Cons(4, _))) => x
     case Nil => 42
     case Cons(x, Cons(y, Cons(3, Cons(4, _)))) => x + y
@@ -99,7 +101,7 @@ object List {
   // recursion function, foldLeft, that is tail-recursive, using the techniques
   // we discussed in the previous chapter. Here is its signature:
   //
-  def foldLeft[A,B](as: List[A], z: B)(f: (B, A) => B): B = ???
+  def foldLeft[A, B](as: List[A], z: B)(f: (B, A) => B): B = ???
 
   // Exercise 3.11
   //
@@ -144,7 +146,10 @@ object List {
   // Write a function map that generalizes modifying each element in a list
   // while maintaining the structure of the list. Here is its signature:
   //
-  def map[A,B](as: List[A])(f: A => B): List[B] = ???
+  def map[A, B](as: List[A])(f: A => B): List[B] = as match {
+    case Nil => Nil
+    case Cons(a, rest) => Cons(f(a), map(rest)(f))
+  }
 
   // Exercise 3.19
   //
@@ -159,7 +164,8 @@ object List {
   // will return a list instead of a single result, and that list should be
   // inserted into the final resulting list. Here is its signature:
   //
-  def flatMap[A,B](as: List[A])(f: A => List[B]): List[B] = ???
+  def flatMap[A, B](as: List[A])(f: A => List[B]): List[B] = ???
+
   //
   // For instance, flatMap(List(1,2,3))(i => List(i,i)) should result in
   // List(1,1,2,2,3,3)

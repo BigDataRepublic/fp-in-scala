@@ -1,7 +1,13 @@
 package nl.bdr.fpis.p3
 
 //hide std library `Option` and `Either`, since we are writing our own in this chapter
+import nl.bdr.fpis.p2.Cons
+
 import scala.{Either => _}
+import scala.{Right => _}
+import scala.{Left => _}
+import scala.util.{Left => _}
+import scala.util.{Right => _}
 
 // Exercise - 4.6
 //
@@ -15,15 +21,19 @@ trait Either[+E, +A] {
 
   def flatMap[EE >: E, B](f: A => Either[EE, B]): Either[EE, B] = ???
 
-  def orElse[EE >: E,B >: A](b: => Either[EE, B]): Either[EE, B] = ???
+  def orElse[EE >: E, B >: A](b: => Either[EE, B]): Either[EE, B] = ???
 
   def map2[EE >: E, B, C](b: Either[EE, B])(f: (A, B) => C): Either[EE, C] = ???
 }
 
-case class Left[+E](value: E) extends Either[E, Nothing]
-case class Right[+A](value: A) extends Either[Nothing, A]
+case class Left[E](value: E) extends Either[E, Nothing]
+
+case class Right[A](value: A) extends Either[Nothing, A]
 
 object Either {
+  import nl.bdr.fpis.p2.List
+  import nl.bdr.fpis.p2.Nil
+
   // Exercise - 4.7
   //
   // Implement sequence and traverse for Either . These should return the first error that’s
@@ -38,15 +48,18 @@ object Either {
   // the given name and the given age before constructing a valid Person.
 
   case class Person(name: Name, age: Age)
+
   sealed class Name(val value: String)
+
   sealed class Age(val value: Int)
 
   def mkName(name: String): Either[String, Name] =
-    if (name == "" || name == null) Left("Name is empty.")
+    if (name == "" || name == null)
+      Left[String]("Name is empty.")
     else Right(new Name(name))
 
   def mkAge(age: Int): Either[String, Age] =
-    if (age < 0) Left("Age is out of range.")
+    if (age < 0) Left("Age is out of range.").asInstanceOf[Either[String, Age]]
     else Right(new Age(age))
 
   def mkPerson(name: String, age: Int): Either[String, Person] =

@@ -1,5 +1,6 @@
 package nl.bdr.fpis.p3
 
+import nl.bdr.fpis.generators.FPGeneratorConfiguration
 import nl.bdr.fpis.p2
 import org.scalactic.{Equality, TolerantNumerics}
 import org.scalatest.Matchers
@@ -11,7 +12,7 @@ import scala.{Either => _}
 import scala.{Left => _}
 import scala.{Right => _}
 
-class P3Spec extends WordSpec with Matchers with GeneratorDrivenPropertyChecks {
+class P3Spec extends WordSpec with Matchers with GeneratorDrivenPropertyChecks with FPGeneratorConfiguration {
 
   "An option" when {
 

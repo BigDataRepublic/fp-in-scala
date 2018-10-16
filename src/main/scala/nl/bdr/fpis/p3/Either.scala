@@ -63,7 +63,7 @@ object Either {
     else Right(new Age(age))
 
   def mkPerson(name: String, age: Int): Either[String, Person] =
-    mkName(name).map2(mkAge(age))(Person(_, _))
+    mkName(name).map2(mkAge(age))(Person)
 
   //  In this implementation, map2 is only able to report one error, even if both the name
   //  and the age are invalid. What would you need to change in order to report both errors?

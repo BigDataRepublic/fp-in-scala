@@ -1,10 +1,11 @@
 package nl.bdr.fpis.p2
 
+import nl.bdr.fpis.generators.FPGeneratorConfiguration
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{Matchers, WordSpec}
 
 
-class TreeSpec extends WordSpec with Matchers with GeneratorDrivenPropertyChecks {
+class TreeSpec extends WordSpec with Matchers with GeneratorDrivenPropertyChecks with FPGeneratorConfiguration {
 
   import nl.bdr.fpis.generators.ArbitraryTrees._
 

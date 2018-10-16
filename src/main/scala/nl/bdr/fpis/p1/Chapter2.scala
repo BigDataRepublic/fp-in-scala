@@ -16,6 +16,7 @@ object Chapter2 {
   //  given comparison function:
   def isSorted[A](as: Array[A], ordered: (A,A) => Boolean): Boolean = ???
 
+  //noinspection ScalaUnnecessaryParentheses
   // Exercise 2.3
   //
   //  Let’s look at another example, currying,9 which converts a function f of two arguments

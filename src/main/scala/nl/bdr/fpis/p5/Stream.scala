@@ -1,12 +1,32 @@
 package nl.bdr.fpis.p5
 
+import scala.annotation.tailrec
+
 sealed trait Stream[+A] {
 
+  //noinspection ScalaUnusedSymbol
   // Text 5.2
   def headOption: Option[A] = this match {
     case Empty => None
     case Cons(h, t) => Some(h())
   }
+
+  // Helper method for tests
+  override def equals(obj: Any): Boolean = obj.isInstanceOf[Stream[A]] && Stream.strEquals(this, obj.asInstanceOf[Stream[A]])
+
+  // Helper method for tests
+  final override def toString: String = {
+    @tailrec
+    def tailRecToString(acc: String, s: Stream[A]): String = {
+      s match {
+        case Empty => acc + "]"
+        case Cons(h1, t1) => tailRecToString(acc + ", " + h1(), t1())
+      }
+    }
+
+    tailRecToString("[", this)
+  }
+
 
   // Ex. 5.1
   /**
@@ -91,9 +111,13 @@ sealed trait Stream[+A] {
   def tails: Stream[Stream[A]] = ???
 
   // Text p.77
-  def hasSubsequence[A](s: Stream[A]): Boolean = tails exists (_ startsWith s)
+  def hasSubsequence[B](s: Stream[B]): Boolean = tails exists (_ startsWith s)
 
   def scanRight[B](z: => B)(f: (A, => B) => B): Stream[B] = ???
+
+  def sliding(n: Int): Stream[Stream[A]] = tails.map(_.take(n))
+
+  def last: Option[A] = foldRight[Option[A]](None)((a, _) => Some(a))
 }
 
 case object Empty extends Stream[Nothing]
@@ -111,6 +135,16 @@ object Stream {
   def empty[A]: Stream[A] = Empty
 
   def apply[A](as: A*): Stream[A] = if (as.isEmpty) empty else cons[A](as.head, apply[A](as.tail: _*))
+
+  // Helper method for tests
+  @tailrec
+  final def strEquals[B](left: Stream[B], right: Stream[B]): Boolean = {
+    (left, right) match {
+      case (_: Empty.type, _: Empty.type) => true
+      case (l: Cons[B], r: Cons[B]) if l.h() == r.h() => strEquals(l.t(), r.t())
+      case _ => false
+    }
+  }
 
   // Text 5.4
   def ones: Stream[Int] = cons(1, ones)
@@ -140,6 +174,10 @@ object Stream {
 
   // Ex. 5.12
   def ones2: Stream[Int] = ???
+
+  // Ex. 5.12 extra
+  def newton(initial: Double, f: Double => Double, fprime: Double => Double): Stream[Double] = ???
+
 }
 
 

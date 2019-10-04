@@ -107,11 +107,16 @@ object List {
   //
   // Write sum , product, and a function to compute the length of a list using
   // foldLeft.
+  def sumFL(ints: List[Double]): Double = ???
+
+  def length[A](list: List[A]): Int = ???
 
   // Exercise 3.12
   //
   // Write a function that returns the reverse of a list (given List(1,2,3) it
   // returns List(3,2,1)). See if you can write it using a fold.
+
+  def reverse[A](ints: List[A]): List[A] = ???
 
   // Exercise 3.13
   //
@@ -124,6 +129,8 @@ object List {
   // Exercise 3.14
   //
   // Implement append in terms of either foldLeft or foldRight.
+  def append[A](list: List[A], list2: List[A]): List[A] = ???
+  def appendFL[A](list: List[A], list2: List[A]): List[A] = ???
 
   // Exercise 3.15
   //
